@@ -34,14 +34,26 @@ def plot_voronoi_delaunay(points):
     points = np.array(points)
     
     # Απεικόνιση της τριγωνοποίησης Delaunay
-    plt.triplot(points[:, 0], points[:, 1], delaunay_tri.simplices, 'g-', alpha=0.6)
+    plt.triplot(points[:, 0], points[:, 1], delaunay_tri.simplices, 'g-', alpha=0.6, label='Τριγωνοποίηση Delaunay')
     
     # Απεικόνιση του διαγράμματος Voronoi
     voronoi_plot_2d(vor, show_vertices=False, line_colors='b', line_width=1.5, point_size=5, ax=plt.gca())
     
+    # Προσθήκη του διαγράμματος Voronoi στο legend
+    plt.plot([], [], 'b-', label='Διάγραμμα Voronoi')
+    
     # Απεικόνιση των αρχικών σημείων
-    plt.plot(points[:, 0], points[:, 1], 'ro')
-    plt.title("Delaunay Triangulation & Voronoi Diagram")
+    plt.plot(points[:, 0], points[:, 1], 'ro', label='Αρχικά Σημεία')
+    
+    # Προσθήκη τίτλου και ετικετών αξόνων
+    plt.title("Τριγωνοποίηση Delaunay & Διάγραμμα Voronoi")
+    plt.xlabel("Άξονας X")
+    plt.ylabel("Άξονας Y")
+    
+    # Προσθήκη υπομνήματος
+    plt.legend()
+    
+    # Εμφάνιση του διαγράμματος
     plt.show()
 
 if __name__ == "__main__":
@@ -49,3 +61,6 @@ if __name__ == "__main__":
     num_points = 20
     points = generate_random_points(num_points)
     plot_voronoi_delaunay(points)
+    
+    
+    

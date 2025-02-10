@@ -40,22 +40,20 @@ def measure_performance(sizes):
 
 if __name__ == "__main__":
     # Ορισμός μεγεθών συνόλων σημείων για τη μέτρηση
-    sizes = [10, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000]
+    sizes = np.linspace(10, 1000000, num=10).astype(int)
     
     # Εκτέλεση της μέτρησης
     delaunay_times, voronoi_times = measure_performance(sizes)
     
     # Απεικόνιση της πολυπλοκότητας
     plt.figure(figsize=(10, 5))
-    plt.plot(sizes, delaunay_times, label="Delaunay Triangulation", marker='o')
-    plt.plot(sizes, voronoi_times, label="Voronoi Diagram", marker='s')
+    plt.plot(sizes, delaunay_times, label="Τριγωνοποίηση Delaunay", marker='o')
+    plt.plot(sizes, voronoi_times, label="Διάγραμμα Voronoi", marker='s')
     
     # Προσθήκη ετικετών και τίτλου
-    plt.xlabel("Number of Points", fontsize=12)
-    plt.ylabel("Execution Time (seconds)", fontsize=12)
-    plt.title("Computational Complexity of Delaunay & Voronoi", fontsize=14)
+    plt.xlabel("Αριθμός Σημείων", fontsize=12)
+    plt.ylabel("Χρόνος Εκτέλεσης (δευτερόλεπτα)", fontsize=12)
+    plt.title("Υπολογιστική Πολυπλοκότητα των Delaunay & Voronoi", fontsize=14)
     plt.legend()
-    plt.xscale("log")
-    plt.yscale("log")
     plt.grid(True)
     plt.show()

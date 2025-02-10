@@ -56,7 +56,7 @@ def fit_polynomial(x, y, degree=3):
 
 if __name__ == "__main__":
     # Ορισμός μεγεθών συνόλων σημείων για τη μέτρηση
-    sizes = np.linspace(10, 100000000, num=3).astype(int)
+    sizes = np.linspace(10, 1000000, num=10).astype(int)
 
     # Εκτέλεση της μέτρησης
     results = benchmark_algorithms(sizes)
