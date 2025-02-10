@@ -1,46 +1,51 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.spatial import Voronoi, Delaunay, voronoi_plot_2d # type: ignore
+from scipy.spatial import Voronoi, Delaunay, voronoi_plot_2d  # type: ignore
 import random
 
-def generate_points(n):
-    # Set the random seed so the points are always the same for comparison
-    random.seed(12)    
-    # Create a list to store the points
-    points = []
+def generate_random_points(n):
+    """
+    Δημιουργία n τυχαίων σημείων σε ένα δισδιάστατο χώρο.
     
-    # Generate n random points
-    for _ in range(n):
-        x = random.uniform(0, 1000)  # Random x-coordinate
-        y = random.uniform(0, 1000)  # Random y-coordinate
-        points.append((x, y))  # Add the point as a tuple to the list
-    
+    Είσοδος: Αριθμός σημείων προς δημιουργία.
+    Έξοδος: Λίστα με τα σημεία ως tuples (x, y).
+    """
+    random.seed(12)  # Ορισμός seed για αναπαραγωγιμότητα
+    points = [(random.uniform(0, 1000), random.uniform(0, 1000)) for _ in range(n)]
     return points
+
 def plot_voronoi_delaunay(points):
-    # Compute Delaunay Triangulation
+    """
+    Απεικόνιση του διαγράμματος Voronoi και της τριγωνοποίησης Delaunay για ένα σύνολο σημείων.
+    
+    Είσοδος: Λίστα σημείων ως tuples (x, y).
+    Έξοδος: Καμία (η συνάρτηση εμφανίζει το διάγραμμα).
+    """
+    # Υπολογισμός της τριγωνοποίησης Delaunay
     delaunay_tri = Delaunay(points)
     
-    # Compute Voronoi Diagram
+    # Υπολογισμός του διαγράμματος Voronoi
     vor = Voronoi(points)
     
-    # Plot both diagrams on the same figure
+    # Απεικόνιση και των δύο διαγραμμάτων στην ίδια εικόνα
     plt.figure(figsize=(8, 8))
     
-    # Convert points to a NumPy array
+    # Μετατροπή των σημείων σε πίνακα NumPy
     points = np.array(points)
     
-    # Plot Delaunay Triangulation
+    # Απεικόνιση της τριγωνοποίησης Delaunay
     plt.triplot(points[:, 0], points[:, 1], delaunay_tri.simplices, 'g-', alpha=0.6)
     
-    # Plot Voronoi Diagram
+    # Απεικόνιση του διαγράμματος Voronoi
     voronoi_plot_2d(vor, show_vertices=False, line_colors='b', line_width=1.5, point_size=5, ax=plt.gca())
     
-    # Plot original points
+    # Απεικόνιση των αρχικών σημείων
     plt.plot(points[:, 0], points[:, 1], 'ro')
     plt.title("Delaunay Triangulation & Voronoi Diagram")
     plt.show()
 
-# Example usage
-n_points = 20
-points = generate_points(n_points)
-plot_voronoi_delaunay(points)
+if __name__ == "__main__":
+    # Παράδειγμα χρήσης
+    num_points = 20
+    points = generate_random_points(num_points)
+    plot_voronoi_delaunay(points)

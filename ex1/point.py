@@ -1,15 +1,22 @@
 import random
 
 def generate_points(n):
-    # Set the random seed so the points are always the same for comparison
-    random.seed(0)    
-    # Create a list to store the points
+    """
+    Δημιουργία n τυχαίων σημείων.
+    
+    Είσοδος: Αριθμός σημείων n.
+    Έξοδος: Λίστα σημείων ως (x, y) συντεταγμένες.
+    """
+    # Ορισμός του seed για να είναι οι τυχαίοι αριθμοί πάντα οι ίδιοι για σύγκριση
+    random.seed(0)
+    
+    # Δημιουργία λίστας για αποθήκευση των σημείων
     points = []
-    
-    # Generate n random points
+
+    # Δημιουργία n τυχαίων σημείων
     for _ in range(n):
-        x = random.uniform(0, 1000)  # Random x-coordinate
-        y = random.uniform(0, 1000)  # Random y-coordinate
-        points.append((x, y))  # Add the point as a tuple to the list
-    
+        x = random.uniform(0, 1000)  # Τυχαία x-συντεταγμένη
+        y = random.uniform(0, 1000)  # Τυχαία y-συντεταγμένη
+        points.append((x, y))  # Προσθήκη του σημείου ως (x, y) στη λίστα
+
     return points
