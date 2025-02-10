@@ -73,9 +73,11 @@ if __name__ == "__main__":
     
     # Οπτικοποίηση του KD-Tree
     plt.figure(figsize=(6, 6))
-    plt.scatter(*zip(*sample_points), color='blue', zorder=1)
+    plt.scatter(*zip(*sample_points), color='black', zorder=1, label='Σημεία')
+    plt.pause(20)
     visualize_kd_tree(sample_points, kd_tree)
     plt.xlim(-1, 100)
     plt.ylim(-1, 100)
-    plt.title("KD-Tree Construction Steps")
+    plt.title("Βήματα Κατασκευής KD-Tree")
+    plt.legend()
     plt.show()

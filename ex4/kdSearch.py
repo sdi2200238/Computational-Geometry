@@ -68,7 +68,7 @@ def plot_kd_tree(points, tree, rect=None):
     Έξοδος: Καμία.
     """
     fig, ax = plt.subplots()
-    ax.scatter(*zip(*points), color='blue', label='Points')
+    ax.scatter(*zip(*points), color='blue', label='Σημεία')
     
     if rect:
         x_min, x_max, y_min, y_max = rect
@@ -76,20 +76,20 @@ def plot_kd_tree(points, tree, rect=None):
                                    linewidth=1, edgecolor='red', facecolor='none', linestyle='dashed')
         ax.add_patch(rect_patch)
         inside_points = range_search(tree, rect, 0, [])
-        ax.scatter(*zip(*inside_points), color='red', label='Inside Rectangle')
+        ax.scatter(*zip(*inside_points), color='red', label='Εντός Ορθογωνίου')
     
     ax.legend()
-    plt.xlabel("X-axis", fontsize=12)
-    plt.ylabel("Y-axis", fontsize=12)
-    plt.title("KD-Tree Range Search Visualization", fontsize=14)
+    plt.xlabel("Άξονας X", fontsize=12)
+    plt.ylabel("Άξονας Y", fontsize=12)
+    plt.title("Οπτικοποίηση Αναζήτησης KD-Tree", fontsize=14)
     plt.grid()
     plt.show()
 
 if __name__ == "__main__":
     # Δημιουργία τυχαίων 2D σημείων
-    np.random.seed(12)
+    np.random.seed(0)
     num_points = 150
-    points = [(random.uniform(0, 100), random.uniform(0, 100)) for _ in range(num_points)]
+    points = [(round(random.uniform(0, 100), 2), round(random.uniform(0, 100), 2)) for _ in range(num_points)]
 
     # Κατασκευή του δέντρου k-d
     kd_tree = build_kd_tree(points)
@@ -102,5 +102,5 @@ if __name__ == "__main__":
     plot_kd_tree(points, kd_tree, search_rect)
 
     # Εκτύπωση των σημείων εντός του ορθογωνίου αναζήτησης
-    print("Points inside the search rectangle:")
+    print("Σημεία εντός του ορθογωνίου αναζήτησης:")
     print(found_points)
