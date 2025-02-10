@@ -63,9 +63,9 @@ if __name__ == "__main__":
 
     # Εξαγωγή αποτελεσμάτων για την απεικόνιση
     sizes = [result[0] for result in results]
-    incremental_times = [result[1] for result in results]
+    incremental_times = [result[3] for result in results]
     gift_wrapping_times = [result[2] for result in results]
-    divide_and_conquer_times = [result[3] for result in results]
+    divide_and_conquer_times = [result[1] for result in results]
     quickhull_times = [result[4] for result in results]
 
     # Απεικόνιση των αποτελεσμάτων

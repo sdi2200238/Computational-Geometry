@@ -1,61 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-
-def simplex(c, A, b):
-    """
-    Υλοποίηση της μεθόδου Simplex για την επίλυση προβλημάτων γραμμικού προγραμματισμού.
-    
-    Μέγιστο: c^T x
-    Υπό συνθήκη: Ax <= b, x >= 0
-    """
-    m, n = A.shape
-
-    # Μετατροπή του προβλήματος σε τυπική μορφή προσθέτοντας μεταβλητές χαλάρωσης
-    A = np.hstack([A, np.eye(m)])  # Προσθήκη ταυτοτικής μήτρας για τις μεταβλητές χαλάρωσης
-    c = np.concatenate([c, np.zeros(m)])  # Επέκταση της συνάρτησης κόστους με μηδενικά για τις μεταβλητές χαλάρωσης
-
-    # Αρχικοποίηση του Simplex 
-    tableau = np.zeros((m + 1, n + m + 1))
-    tableau[:-1, :-1] = A
-    tableau[:-1, -1] = b
-    tableau[-1, :-1] = -c  # Αρνητική συνάρτηση κόστους για μεγιστοποίηση
-
-    # Παρακολούθηση βάσης
-    basis = list(range(n, n + m))
-
-    while True:
-        # Έλεγχος αν είναι βέλτιστο
-        if np.all(tableau[-1, :-1] >= 0):
-            break  # Βρέθηκε βέλτιστη λύση
-
-        # Εύρεση εισερχόμενης μεταβλητής (πιο αρνητική στην γραμμή του στόχου)
-        pivot_col = np.argmin(tableau[-1, :-1])
-
-        # Έλεγχος για απεριόριστη λύση
-        if np.all(tableau[:-1, pivot_col] <= 0):
-            raise ValueError("Απεριόριστη Λύση")
-
-        # Εύρεση εξερχόμενης μεταβλητής (ελάχιστος θετικός λόγος)
-        ratios = np.divide(tableau[:-1, -1], tableau[:-1, pivot_col], 
-                           out=np.full(m, np.inf), where=tableau[:-1, pivot_col] > 0)
-        pivot_row = np.argmin(ratios)
-
-        # Pivoting
-        tableau[pivot_row, :] /= tableau[pivot_row, pivot_col]  # Κανονικοποίηση γραμμής pivot
-        for i in range(m + 1):
-            if i != pivot_row:
-                tableau[i, :] -= tableau[i, pivot_col] * tableau[pivot_row, :]
-
-        # Ενημέρωση βάσης
-        basis[pivot_row] = pivot_col
-
-    # Εξαγωγή λύσης
-    solution = np.zeros(n + m)
-    solution[basis] = tableau[:-1, -1]
-    
-    return solution[:n], tableau[-1, -1]  # Επιστροφή μόνο των μεταβλητών απόφασης
-
+from scipy.optimize import linprog
 
 if __name__ == "__main__":
     # Ορισμός του προβλήματος
@@ -78,12 +24,17 @@ if __name__ == "__main__":
     A = np.vstack([A, [0, -1]])  # x2 >= 0 → -x2 <= 0
     b = np.append(b, 0)
 
-    # Επίλυση με τη μέθοδο Simplex
-    solution, optimal_value = simplex(c, A, b)
+    # Επίλυση με τη μέθοδο linprog
+    res = linprog(-c, A_ub=A, b_ub=b, method='highs')
 
     # Εμφάνιση αποτελεσμάτων
-    print("Βέλτιστη Λύση: ", solution)
-    print("Βέλτιστη Τιμή: ", optimal_value)
+    if res.success:
+        solution = res.x
+        optimal_value = res.fun
+        print("Βέλτιστη Λύση: ", solution)
+        print("Βέλτιστη Τιμή: ", -optimal_value)
+    else:
+        print("Το πρόβλημα δεν έχει λύση.")
 
     # =================== ΑΠΕΙΚΟΝΙΣΗ ΕΦΙΚΤΗΣ ΠΕΡΙΟΧΗΣ ===================
     x1_vals = np.linspace(-5, 10, 400)
@@ -109,7 +60,7 @@ if __name__ == "__main__":
             plt.axvline(b[i] / A[i, 0], color='black', linestyle='--', label=f'Περιορισμός {i+1}')
 
     # Απεικόνιση της βέλτιστης λύσης
-    if solution is not None:
+    if res.success:
         plt.scatter(solution[0], solution[1], color='red', marker='o', label="Βέλτιστη Λύση", zorder=3)
 
     # Δημιουργία προσαρμοσμένης εγγραφής για την εφικτή περιοχή
@@ -118,7 +69,7 @@ if __name__ == "__main__":
     # Ετικέτες και εμφάνιση γραφήματος
     plt.xlabel('$x_1$')
     plt.ylabel('$x_2$')
-    plt.title("Εφικτή Περιοχή και Βέλτιστη Λύση με τη Μέθοδο Simplex")
+    plt.title("Εφικτή Περιοχή και Βέλτιστη Λύση με τη Μέθοδο linprog")
     plt.axhline(0, color='black', linewidth=1)
     plt.axvline(0, color='black', linewidth=1)
     plt.xlim(-5, 5)
