@@ -58,7 +58,7 @@ def merge_hulls(left, right):
     return lower_hull[:-1] + upper_hull[:-1]
 
 if __name__ == "__main__":
-    points = generate_points(200)
+    points = generate_points(100)
     convex_hull = divide_and_conquer(points)
 
     # Οπτικοποίηση αποτελέσματος
