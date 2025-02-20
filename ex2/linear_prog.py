@@ -4,7 +4,7 @@ from matplotlib.patches import Patch
 from scipy.optimize import linprog
 
 def solve_and_plot(A, b, c, step, final_step):
-    # Επίλυση με τη μέθοδο linprog
+    # Επίλυση με τη μέθοδο 
     res = linprog(-c, A_ub=A, b_ub=b, method='highs')
 
     # Εμφάνιση αποτελεσμάτων
@@ -53,7 +53,7 @@ def solve_and_plot(A, b, c, step, final_step):
         # Ετικέτες και εμφάνιση γραφήματος
         plt.xlabel('$x_1$')
         plt.ylabel('$x_2$')
-        plt.title(f"Εφικτή Περιοχή και Βέλτιστη Λύση με τη Μέθοδο linprog (Βήμα {step})")
+        plt.title(f"Εφικτή Περιοχή και Βέλτιστη Λύση")
         plt.axhline(0, color='black', linewidth=1)
         plt.axvline(0, color='black', linewidth=1)
         plt.xlim(-5, 5)
@@ -73,15 +73,11 @@ if __name__ == "__main__":
         [2, -7],
         [-1, 8],
         [2, -6],
+        [-1, 0],
+        [0, -1],
+        
     ])
-    b = np.array([12, 3, 18, -8, 35, 29, 9])
-
-    # Προσθήκη των περιορισμών: x1 >= 0 και x2 >= 0
-    A = np.vstack([A, [-1, 0]])  # x1 >= 0 → -x1 <= 0
-    b = np.append(b, 0)
-
-    A = np.vstack([A, [0, -1]])  # x2 >= 0 → -x2 <= 0
-    b = np.append(b, 0)
+    b = np.array([12, 3, 18, -8, 35, 29, 9, 0, 0])
 
     # Επίλυση και απεικόνιση βήμα προς βήμα
     final_step = A.shape[0]
